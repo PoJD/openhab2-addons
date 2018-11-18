@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="canrelay"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="http://eclipse.org/smarthome/schemas/thing-description/v1.0.0"
+	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/thing-description-1.0.0.xsd">
+
+    <bridge-type id="hwCanBridge">
+        <label>CanRelay CANBUS bridge</label>
+        <description>Hardware bridge to CANBUS CanRelay (USBTin)</description>
+        <config-description>
+            <parameter name="serialPort" type="text">
+                <context>serial-port</context>
+                <default>/dev/ttyACM0</default>
+                <label>CANBUS Bridge Serial Device</label>
+                <description>
+                    The device with the hardware bridge to CANBUS. Valid values e.g. /dev/ttyACM0 for Linux (CDC ACM USB Device in case of USBTin).
+                </description>
+            </parameter>
+        </config-description>
+    </bridge-type>
+
+	<thing-type id="light">
+    	<supported-bridge-type-refs>
+            <bridge-type-ref id="hwCanBridge" />
+        </supported-bridge-type-refs>
+        
+		<label>CanRelay Output Light</label>
+		<description>
+		  Individual Light exposed and active on the CanRelay. Each CanRelay can have up to 30 individual output lights connected to it.
+		  Depends then on configuration of the CanRelay, but this binding will detect that at runtime via CANBUS protocol.
+		  There could be up to 2 CanRelays on the CANBUS, therefore up to 60 individual output lights for this very binding.
+		</description>
+        <category>Lightbulb</category>
+		<channels>
+			<channel id="lightSwitch" typeId="lightSwitchType" />
+		</channels>
+        <properties>
+            <property name="vendor">Lubos Housa</property>
+            <property name="modelId">CanRelay 1.1</property>
+            <property name="protocol">CANBUS</property>
+        </properties>
+        <representation-property>nodeID</representation-property>
+	</thing-type>
+
+	<!-- Sample Channel Type -->
+	<channel-type id="lightSwitchType">
+		<item-type>Switch</item-type>
+		<label>CanRelay Output Light Switch</label>
+		<description>CanRelay Output Light Switch represents the functionality of CanRelay to control the output lights connected to it</description>
+        <category>Switch</category>
+	</channel-type>
+
+</thing:thing-descriptions>
